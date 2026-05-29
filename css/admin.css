@@ -1,0 +1,154 @@
+/* ============================================================
+   admin.css — 管理画面スタイル
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Zen+Maru+Gothic:wght@500;700&display=swap');
+
+:root {
+  --cream: #fcf8f0; --paper: #ffffff; --ink: #5b4636;
+  --soft-ink: #9a8b78; --peach: #f6c8b0; --sky: #bcdce4;
+  --leaf: #cfe0b8; --line: #ece2d2; --dot: #e35b4a;
+  --shadow: rgba(120,100,80,.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: 'Zen Maru Gothic','Kosugi Maru',sans-serif; color: var(--ink); background: var(--cream); }
+
+/* ---------- パスワード画面 ---------- */
+.pw-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.pw-card {
+  background: var(--paper); border-radius: 28px; padding: 40px 36px;
+  box-shadow: 0 12px 36px var(--shadow); text-align: center; max-width: 380px; width: 100%;
+}
+.pw-card .pw-emoji { font-size: 56px; margin-bottom: 16px; }
+.pw-card h1 { font-size: 20px; margin: 0 0 8px; }
+.pw-card p { font-size: 14px; color: var(--soft-ink); margin: 0 0 24px; }
+.pw-input {
+  width: 100%; border: 2px solid var(--line); border-radius: 14px;
+  padding: 12px 16px; font-size: 16px; font-family: inherit;
+  color: var(--ink); background: var(--cream); outline: none; margin-bottom: 12px;
+  transition: border-color .15s;
+}
+.pw-input:focus { border-color: var(--peach); }
+.pw-error { color: var(--dot); font-size: 13px; margin-bottom: 8px; min-height: 20px; }
+.pw-btn {
+  width: 100%; border: none; border-radius: 50px; padding: 14px;
+  font-size: 16px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg,var(--peach),#ef9b7c);
+  box-shadow: 0 6px 18px rgba(240,150,100,.35);
+  cursor: pointer; font-family: inherit; transition: transform .15s;
+}
+.pw-btn:active { transform: scale(.97); }
+
+/* ---------- 管理画面レイアウト ---------- */
+.admin-layout { display: none; min-height: 100vh; flex-direction: column; }
+.admin-layout.active { display: flex; }
+
+.admin-header {
+  background: var(--ink); color: #fff; padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.admin-header h1 { margin: 0; font-size: 18px; }
+.admin-header-right { display: flex; gap: 10px; align-items: center; }
+.btn-back-site { border: 2px solid rgba(255,255,255,.3); background: transparent; color: #fff; border-radius: 50px; padding: 6px 16px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; transition: border-color .15s; }
+.btn-back-site:hover { border-color: rgba(255,255,255,.7); }
+.btn-logout { background: none; border: none; color: rgba(255,255,255,.6); font-size: 13px; font-family: inherit; cursor: pointer; }
+
+/* ---------- タブ ---------- */
+.admin-tabs { display: flex; background: var(--paper); border-bottom: 2px solid var(--line); overflow-x: auto; }
+.tab-btn {
+  border: none; background: none; padding: 14px 20px; font-size: 14px;
+  font-weight: 700; color: var(--soft-ink); cursor: pointer; white-space: nowrap;
+  border-bottom: 3px solid transparent; margin-bottom: -2px; font-family: inherit;
+  transition: color .15s;
+}
+.tab-btn.active { color: var(--ink); border-bottom-color: var(--peach); }
+.tab-panel { display: none; flex: 1; padding: 24px 20px; }
+.tab-panel.active { display: block; }
+
+/* ---------- 共通UI ---------- */
+.section-card {
+  background: var(--paper); border-radius: 20px; padding: 20px 22px;
+  box-shadow: 0 4px 14px var(--shadow); margin-bottom: 20px;
+}
+.section-card h2 { font-size: 16px; margin: 0 0 16px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.section-card h3 { font-size: 14px; margin: 16px 0 10px; color: var(--soft-ink); }
+
+.form-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; flex-wrap: wrap; }
+.form-row label { font-size: 13px; color: var(--soft-ink); min-width: 80px; padding-top: 10px; }
+.inp {
+  border: 2px solid var(--line); border-radius: 12px; padding: 8px 12px;
+  font-size: 14px; font-family: inherit; color: var(--ink);
+  background: var(--cream); outline: none; transition: border-color .15s;
+  width: 100%;
+}
+.inp:focus { border-color: var(--peach); }
+.inp-sm { max-width: 80px; }
+.inp-emoji { max-width: 100px; font-size: 20px; text-align: center; }
+textarea.inp { resize: vertical; min-height: 80px; line-height: 1.7; }
+
+.btn { border: none; border-radius: 50px; padding: 8px 20px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; transition: transform .15s; }
+.btn:active { transform: scale(.95); }
+.btn-primary { background: var(--peach); color: #fff; }
+.btn-secondary { background: var(--sky); color: var(--ink); }
+.btn-danger { background: #fde8e6; color: var(--dot); }
+.btn-success { background: var(--leaf); color: var(--ink); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+
+/* ---------- カテゴリ・カード一覧 ---------- */
+.cat-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.cat-tab {
+  border: 2px solid var(--line); background: var(--paper); border-radius: 16px;
+  padding: 7px 16px; font-size: 13px; font-weight: 700; color: var(--soft-ink);
+  cursor: pointer; font-family: inherit; transition: .15s; display: flex; align-items: center; gap: 6px;
+}
+.cat-tab.active { background: var(--leaf); color: var(--ink); border-color: var(--leaf); }
+.cat-tab .del-cat { font-size: 14px; color: var(--soft-ink); margin-left: 4px; }
+.cat-tab .del-cat:hover { color: var(--dot); }
+
+.card-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.card-item {
+  background: var(--cream); border-radius: 14px; padding: 12px;
+  display: flex; flex-direction: column; gap: 6px; border: 2px solid var(--line);
+  transition: border-color .15s;
+}
+.card-item:hover { border-color: var(--peach); }
+.card-item-top { display: flex; align-items: center; gap: 8px; }
+.card-preview-emoji { font-size: 28px; }
+.card-preview-name { font-size: 14px; font-weight: 700; flex: 1; }
+.card-actions { display: flex; gap: 6px; }
+
+/* ---------- テキスト管理 ---------- */
+.text-section { border-left: 4px solid var(--peach); padding-left: 16px; margin-bottom: 20px; }
+
+/* ---------- 設定管理 ---------- */
+.age-setting-row {
+  display: grid; grid-template-columns: 60px 1fr 1fr; gap: 10px;
+  align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--line);
+}
+.age-lbl { font-weight: 700; color: var(--soft-ink); }
+
+/* ---------- バックアップ ---------- */
+.backup-card { text-align: center; padding: 32px; }
+.backup-card p { font-size: 14px; color: var(--soft-ink); line-height: 1.8; }
+.backup-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+.backup-btns .btn { padding: 12px 28px; font-size: 15px; }
+.file-input-wrap { position: relative; overflow: hidden; display: inline-block; }
+.file-input-wrap input[type=file] { position: absolute; left: -9999px; }
+.import-notice { font-size: 12px; color: var(--dot); margin-top: 12px; display: none; }
+.import-notice.show { display: block; }
+
+/* ---------- パスワード変更 ---------- */
+.pw-change-form { max-width: 360px; }
+
+/* ---------- レスポンシブ ---------- */
+@media (max-width: 600px) {
+  .admin-tabs { }
+  .tab-btn { padding: 12px 14px; font-size: 12px; }
+  .card-list { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .tab-panel { padding: 16px 14px; }
+}

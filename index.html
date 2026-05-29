@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f6c8b0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>みぎのう あそび — 0〜5さいの右脳トレーニング</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     LANDING PAGE
+     ============================================================ -->
+<div id="page-landing" class="page active">
+
+  <!-- 固定ヘッダー -->
+  <header class="site-header">
+    <div class="site-logo"><span id="hero-title-main">みぎのう</span> <span id="hero-title-span" style="color:var(--peach)">あそび</span></div>
+    <nav class="site-nav" aria-label="セクションへ移動">
+      <a href="#sec-flashcard">フラッシュ</a>
+      <a href="#sec-dots">ドッツ</a>
+      <a href="#sec-recitation">あんしょう</a>
+      <a href="#sec-memorychip">メモリー</a>
+      <a href="#sec-miginoukun">みぎのう君</a>
+    </nav>
+    <a href="admin.html" class="header-admin" aria-label="管理画面">⚙️</a>
+  </header>
+
+  <main>
+
+    <!-- ① ヒーロー -->
+    <section class="hero-section" id="sec-hero" aria-labelledby="hero-heading">
+      <h1 class="hero-title" id="hero-heading" aria-label="みぎのう あそび">
+        みぎのう <span>あそび</span>
+      </h1>
+      <p class="hero-sub" id="hero-sub">0〜5さいの きおく・ちょっかんトレーニング</p>
+
+      <div class="brain-cards" role="list" aria-label="右脳と左脳の説明">
+        <div class="brain-card right" role="listitem">
+          <b>右のう</b>
+          <small>感性・イメージ・直感<br>ひらめきの脳</small>
+        </div>
+        <div class="brain-card left" role="listitem">
+          <b>左のう</b>
+          <small>言語・論理・計算<br>ことばの脳</small>
+        </div>
+      </div>
+
+      <div class="hero-graph" role="img" aria-label="年齢別の右脳活発度イメージグラフ">
+        <h3>右脳が活発な「今」がチャンス — 臨界期イメージ</h3>
+        <div class="graph-bar-wrap" id="brain-graph-bars"></div>
+      </div>
+
+      <div class="hero-desc-wrap">
+        <p id="hero-brain-desc">右脳は感性・イメージ・直感、左脳は言語・論理・計算をつかさどるとされています。両方をバランスよく育てることで、高い力を発揮できると考えられています。</p>
+        <p id="hero-critical-desc">右脳は生まれてすぐは活発に働いており、成長とともに左脳が優位になっていくとされています。右脳が活発な乳幼児期に楽しい刺激をたっぷり与えることが大切と考えられています。</p>
+        <p id="hero-flash-desc">1枚1秒以下の高速提示で、瞬時に処理しようとする右脳が働き始めて活性化するとされています。</p>
+        <p class="hero-disclaimer" id="hero-disclaimer">※ここで紹介している効果は、右脳教育に関する教育理論の紹介であり、医学的・科学的に確立された効果を保証するものではありません。お子さまの様子を見ながら、楽しく取り組むことを第一にしてください。</p>
+      </div>
+    </section>
+
+    <!-- ② フラッシュカード -->
+    <section class="content-section animate-on-scroll" id="sec-flashcard" aria-labelledby="fc-heading">
+      <div class="content-inner">
+        <div class="section-header">
+          <div class="section-emoji" aria-hidden="true">🐰</div>
+          <div class="section-header-text">
+            <div class="section-badge">おすすめ</div>
+            <h2 class="section-title" id="fc-heading" id="sec-flashcard-title">フラッシュカード</h2>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="info-card">
+            <h3>なぜやるの？</h3>
+            <p id="sec-flashcard-meaning">絵や文字のカードを高速・大量に見せることで、瞬時に処理する右脳が働き始めて活性化するとされる、右脳トレーニングの基礎です。語彙力・理解力・表現力が育つとされます。</p>
+          </div>
+          <div class="info-card">
+            <h3>こうするといいよ</h3>
+            <p id="sec-flashcard-howto">1枚1秒以下のテンポでリズムよく見せましょう。嫌がったらすぐやめることが大切です。毎日少しずつ同じカードを繰り返すことで定着しやすくなります。</p>
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn-start" onclick="Flashcard.open()" aria-label="フラッシュカードをはじめる">▶ はじめる</button>
+          <button class="btn-print" onclick="App.openPrint('flashcard')" aria-label="フラッシュカードを印刷する">🖨 印刷する</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ ドッツ -->
+    <section class="content-section animate-on-scroll" id="sec-dots" aria-labelledby="dots-heading">
+      <div class="content-inner">
+        <div class="section-header">
+          <div class="section-emoji" aria-hidden="true">🔴</div>
+          <div class="section-header-text">
+            <div class="section-badge">おすすめ</div>
+            <h2 class="section-title" id="dots-heading" id="sec-dots-title">ドッツ</h2>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="info-card dots-accent">
+            <h3>なぜやるの？</h3>
+            <p id="sec-dots-meaning">赤い点の数を高速で見せることで、右脳の計算力・数量感覚を目覚めさせるトレーニングです。数を「量」として直感的にとらえる力を育てるとされます。</p>
+          </div>
+          <div class="info-card dots-accent">
+            <h3>こうするといいよ</h3>
+            <p id="sec-dots-howto">点の配置を毎回ランダムにし、高速でテンポよく見せながら数字を声に出して添えましょう。少ない数から始め、段階的に増やしていきます。</p>
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn-start" onclick="Dots.open()" aria-label="ドッツをはじめる">▶ はじめる</button>
+          <button class="btn-print" onclick="App.openPrint('dots')" aria-label="ドッツカードを印刷する">🖨 印刷する</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ イメージ・あんしょう -->
+    <section class="content-section animate-on-scroll" id="sec-recitation" aria-labelledby="rec-heading">
+      <div class="content-inner">
+        <div class="section-header">
+          <div class="section-emoji" aria-hidden="true">🌈</div>
+          <div class="section-header-text">
+            <div class="section-badge" style="background:var(--leaf);color:var(--ink);">中おすすめ</div>
+            <h2 class="section-title" id="rec-heading" id="sec-recitation-title">イメージ・あんしょう</h2>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="info-card sky-accent">
+            <h3>なぜやるの？</h3>
+            <p id="sec-recitation-meaning">短い詩や言葉を繰り返し唱えて倍速で言えるようにすることで、記憶の質を高め、完全記憶を育てるとされます。ありありと想像するイメージ力も育てます。</p>
+          </div>
+          <div class="info-card sky-accent">
+            <h3>こうするといいよ</h3>
+            <p id="sec-recitation-howto">短い詩・童謡から始め、毎日繰り返しましょう。覚えたら2倍速・3倍速と速めて記憶の質を高めます。完璧を求めず、リズムや音の楽しさを大切に。</p>
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn-start" onclick="Recitation.open()" aria-label="あんしょうをはじめる">▶ はじめる</button>
+          <button class="btn-print" onclick="App.openPrint('recitation')" aria-label="あんしょうシートを印刷する">🖨 印刷する</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑤ メモリーチップ -->
+    <section class="content-section animate-on-scroll" id="sec-memorychip" aria-labelledby="mc-heading">
+      <div class="content-inner">
+        <div class="section-header">
+          <div class="section-emoji" aria-hidden="true">🧩</div>
+          <div class="section-header-text">
+            <div class="section-badge new">あたらしい</div>
+            <h2 class="section-title" id="mc-heading" id="sec-memorychip-title">メモリーチップ</h2>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="info-card leaf-accent">
+            <h3>なぜやるの？</h3>
+            <p id="sec-memorychip-meaning">チップを使って記憶力・記憶法を楽しく育てるトレーニングです。順番に覚えて再現したり、神経衰弱形式でペアを探したり、仲間に分けたりして右脳の記憶力を育てます。</p>
+          </div>
+          <div class="info-card leaf-accent">
+            <h3>こうするといいよ</h3>
+            <p id="sec-memorychip-howto">リンク法ではチップを順番に示しながら情景的なお話を作りましょう。神経衰弱は枚数を少なくからスタートし、慣れたら増やします。</p>
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn-start" onclick="MemoryChip.open()" aria-label="メモリーチップをはじめる">▶ はじめる</button>
+          <button class="btn-print" onclick="App.openPrint('memorychip')" aria-label="メモリーチップを印刷する">🖨 印刷する</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑥ みぎのう君 -->
+    <section class="content-section animate-on-scroll" id="sec-miginoukun" aria-labelledby="mign-heading">
+      <div class="content-inner">
+        <div class="section-header">
+          <div class="section-emoji" aria-hidden="true">🧠</div>
+          <div class="section-header-text">
+            <div class="section-badge new">あたらしい</div>
+            <h2 class="section-title" id="mign-heading" id="sec-miginoukun-title">みぎのう君</h2>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="info-card">
+            <h3>なぜやるの？</h3>
+            <p id="sec-miginoukun-meaning">絵・色・記号のチップを使って「完全記憶」を育てます。グリッドに並べたチップを覚えて再現するマス記憶や、ポーカーゲームで楽しく記憶力を鍛えます。</p>
+          </div>
+          <div class="info-card">
+            <h3>こうするといいよ</h3>
+            <p id="sec-miginoukun-howto">マス記憶は最初は少ないチップ・短い時間から始め、できたら徐々に難しくしましょう。当てる楽しさ・できた喜びを大切に、遊び感覚で取り組みます。</p>
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn-start" onclick="Miginoukun.open()" aria-label="みぎのう君をはじめる">▶ はじめる</button>
+          <button class="btn-print" onclick="App.openPrint('miginoukun')" aria-label="みぎのう君カードを印刷する">🖨 印刷する</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑦ きおくゲーム（準備中） -->
+    <section class="content-section section-coming animate-on-scroll" id="sec-game" aria-labelledby="game-heading">
+      <div class="content-inner">
+        <div class="section-header">
+          <div class="section-emoji" aria-hidden="true">🎮</div>
+          <div class="section-header-text">
+            <div class="section-badge coming">じゅんびちゅう</div>
+            <h2 class="section-title" id="game-heading" id="sec-game-title">きおくゲーム</h2>
+          </div>
+        </div>
+        <div class="coming-notice" role="status">
+          <div class="big-emoji" aria-hidden="true">🎮</div>
+          <p>ただいま　じゅんびちゅうです。もうすこし　まっていてね！</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- フッター -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p class="footer-title">みぎのう あそび について</p>
+      <p>0〜5歳児向けの右脳活性化・記憶力トレーニング Webアプリです。個人運用の学習補助ツールであり、特定の教育機関・企業とは関係ありません。</p>
+      <p>音声にはブラウザ標準の Web Speech API を使用しています（無料・APIキー不要）。</p>
+      <p>本アプリはオフラインでも使用できます（PWA対応）。スマートフォンの「ホーム画面に追加」でアプリのようにご利用いただけます。</p>
+
+      <h3 style="color:#fff;margin:20px 0 10px;">年齢別の目安</h3>
+      <table class="age-table">
+        <thead><tr><th>年齢</th><th>提示速度</th><th>ドッツ最大</th><th>操作の主体</th></tr></thead>
+        <tbody>
+          <tr><td>0さい</td><td>2.0秒</td><td>3</td><td>保護者</td></tr>
+          <tr><td>1さい</td><td>1.5秒</td><td>5</td><td>保護者</td></tr>
+          <tr><td>2さい</td><td>1.0秒</td><td>7</td><td>保護者＋本人</td></tr>
+          <tr><td>3さい</td><td>0.8秒</td><td>10</td><td>本人中心</td></tr>
+          <tr><td>4さい</td><td>0.6秒</td><td>15</td><td>本人</td></tr>
+          <tr><td>5さい</td><td>0.5秒</td><td>20</td><td>本人</td></tr>
+        </tbody>
+      </table>
+
+      <div class="footer-disclaimer">
+        <p>※本アプリで紹介している効果は、右脳教育に関する教育理論の紹介であり、医学的・科学的に確立された効果を保証するものではありません。</p>
+        <p>※個人情報の収集・外部送信は一切行いません。</p>
+        <p style="margin-top:8px;">© 個人運用 / Powered by Web Speech API（無料）</p>
+      </div>
+    </div>
+  </footer>
+</div><!-- /page-landing -->
+
+
+<!-- ============================================================
+     FLASHCARD TRAINING VIEW
+     ============================================================ -->
+<div id="page-flashcard" class="training-page" role="main" aria-label="フラッシュカード トレーニング">
+  <div class="topbar">
+    <button class="back" onclick="App.goHome()" aria-label="ホームへ戻る">←</button>
+    <h2 class="topbar-title">フラッシュカード</h2>
+    <div class="age-pills" id="fc-age-pills" role="group" aria-label="年齢選択"></div>
+  </div>
+  <div class="cat-row" id="fc-cat-row" role="group" aria-label="カテゴリ選択"></div>
+  <div class="stage">
+    <div class="flash-card" id="fc-card" role="img" aria-live="polite" aria-label="フラッシュカード">
+      <span class="corner tl" aria-hidden="true"></span>
+      <span class="corner br" aria-hidden="true"></span>
+      <span class="pic" id="fc-pic" aria-hidden="true">🐰</span>
+      <span class="word" id="fc-word">うさぎ</span>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="play-row" role="group" aria-label="再生コントロール">
+      <button class="ctl" onclick="Flashcard.prev()" aria-label="前のカード">⏮</button>
+      <button class="ctl main" id="fc-play-btn" onclick="Flashcard.togglePlay()" aria-label="再生・一時停止">▶</button>
+      <button class="ctl" onclick="Flashcard.next()" aria-label="次のカード">⏭</button>
+    </div>
+    <div class="opts" role="group" aria-label="設定">
+      <div class="opt"><span>はやさ</span>
+        <div class="seg" id="fc-speed-seg" role="group" aria-label="速度">
+          <button data-s="2000">ゆっくり</button>
+          <button data-s="1000" class="on">ふつう</button>
+          <button data-s="500">はやい</button>
+        </div>
+      </div>
+      <div class="opt"><span>おんせい</span><div class="toggle on" id="fc-voice-toggle" role="switch" aria-checked="true" aria-label="音声"></div></div>
+      <div class="opt"><span>もじ</span><div class="toggle on" id="fc-text-toggle" role="switch" aria-checked="true" aria-label="文字表示"></div></div>
+      <div class="opt"><span>りょうめん</span><div class="toggle" id="fc-flip-toggle" role="switch" aria-checked="false" aria-label="両面モード"></div></div>
+    </div>
+  </div>
+</div><!-- /page-flashcard -->
+
+
+<!-- ============================================================
+     DOTS TRAINING VIEW
+     ============================================================ -->
+<div id="page-dots" class="training-page" role="main" aria-label="ドッツ トレーニング">
+  <div class="topbar">
+    <button class="back" onclick="App.goHome()" aria-label="ホームへ戻る">←</button>
+    <h2 class="topbar-title">ドッツ</h2>
+    <div class="age-pills" id="dots-age-pills" role="group" aria-label="年齢選択"></div>
+  </div>
+  <div class="stage">
+    <div class="dotboard" id="dots-board" role="img" aria-live="polite" aria-label="ドッツボード">
+      <div class="dot-answer" id="dots-answer" aria-hidden="true"></div>
+      <div class="dot-equation" id="dots-equation" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="play-row" role="group" aria-label="再生コントロール">
+      <button class="ctl main" id="dots-play-btn" onclick="Dots.togglePlay()" aria-label="再生・一時停止">▶</button>
+      <button class="ctl" onclick="Dots.newDots()" aria-label="新しいドッツ">🔄</button>
+    </div>
+    <div class="opts" role="group" aria-label="設定">
+      <div class="opt"><span>はやさ</span>
+        <div class="seg" id="dots-speed-seg" role="group" aria-label="速度">
+          <button data-s="2000">ゆっくり</button>
+          <button data-s="1200" class="on">ふつう</button>
+          <button data-s="600">はやい</button>
+        </div>
+      </div>
+      <div class="opt"><span>こたえ</span><div class="toggle on" id="dots-show-toggle" role="switch" aria-checked="true" aria-label="答え表示"></div></div>
+      <div class="opt"><span>おんせい</span><div class="toggle on" id="dots-voice-toggle" role="switch" aria-checked="true" aria-label="音声"></div></div>
+      <div class="opt"><span>けいさん</span><div class="toggle" id="dots-addsub-toggle" role="switch" aria-checked="false" aria-label="加減算モード"></div></div>
+    </div>
+    <div class="opts">
+      <div class="opt"><span>かたち</span>
+        <div class="seg" id="dots-shape-seg" role="group" aria-label="ドット形状">
+          <button data-sh="circle" class="on">まる</button>
+          <button data-sh="star">ほし</button>
+          <button data-sh="heart">ハート</button>
+          <button data-sh="rabbit">うさぎ</button>
+          <button data-sh="penguin">ぺんぎん</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-dots -->
+
+
+<!-- ============================================================
+     RECITATION TRAINING VIEW
+     ============================================================ -->
+<div id="page-recitation" class="training-page" role="main" aria-label="あんしょう トレーニング">
+  <div class="topbar">
+    <button class="back" onclick="App.goHome()" aria-label="ホームへ戻る">←</button>
+    <h2 class="topbar-title">イメージ・あんしょう</h2>
+  </div>
+  <div class="stage" style="flex-direction:column;gap:16px;">
+    <div class="recite-card" role="region" aria-live="polite" aria-label="あんしょうテキスト">
+      <span class="corner tl" aria-hidden="true"></span>
+      <span class="corner br" aria-hidden="true"></span>
+      <div class="recite-text" id="rec-text"></div>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="play-row" role="group" aria-label="再生コントロール">
+      <button class="ctl main" onclick="Recitation.play()" aria-label="よむ">▶</button>
+    </div>
+    <div class="opts">
+      <div class="opt"><span>はやさ</span>
+        <div class="seg" id="rec-speed-seg" role="group" aria-label="速度">
+          <button data-r="0.8">ゆっくり</button>
+          <button data-r="1" class="on">1ばい</button>
+          <button data-r="1.6">2ばい</button>
+          <button data-r="2.4">3ばい</button>
+        </div>
+      </div>
+    </div>
+    <div class="cat-row" id="rec-list" role="group" aria-label="題材選択"></div>
+  </div>
+</div><!-- /page-recitation -->
+
+
+<!-- ============================================================
+     MEMORY CHIP TRAINING VIEW
+     ============================================================ -->
+<div id="page-memorychip" class="training-page" role="main" aria-label="メモリーチップ トレーニング">
+  <div class="topbar">
+    <button class="back" onclick="App.goHome()" aria-label="ホームへ戻る">←</button>
+    <h2 class="topbar-title">メモリーチップ</h2>
+  </div>
+  <div class="mode-select" id="mc-mode-row" role="group" aria-label="モード選択">
+    <button class="mode-btn mc-mode-btn on" data-mode="link">リンク法</button>
+    <button class="mode-btn mc-mode-btn" data-mode="match">神経衰弱</button>
+    <button class="mode-btn mc-mode-btn" data-mode="sort">なかまわけ</button>
+  </div>
+  <div class="cat-row" id="mc-cat-row" role="group" aria-label="カテゴリ選択"></div>
+  <div class="stage" style="flex-direction:column;gap:14px;overflow-y:auto;">
+    <div class="game-msg" id="mc-msg" role="status" aria-live="polite"></div>
+    <div class="chip-stage" id="mc-stage" role="region" aria-label="ゲームエリア"></div>
+    <div class="score-badge" id="mc-score" aria-live="polite"></div>
+    <!-- リザルト -->
+    <div class="result-overlay" id="mc-result" style="display:none;" role="dialog" aria-label="結果">
+      <div class="result-emoji" aria-hidden="true">🎉</div>
+      <div class="result-msg">すごい！</div>
+      <div class="result-sub">ぜんぶ おぼえたね！</div>
+      <button class="btn-retry" onclick="MemoryChip.startMode()">もう一回</button>
+    </div>
+  </div>
+</div><!-- /page-memorychip -->
+
+
+<!-- ============================================================
+     MIGINOUKUN TRAINING VIEW
+     ============================================================ -->
+<div id="page-miginoukun" class="training-page" role="main" aria-label="みぎのう君 トレーニング">
+  <div class="topbar">
+    <button class="back" onclick="App.goHome()" aria-label="ホームへ戻る">←</button>
+    <h2 class="topbar-title">みぎのう君</h2>
+  </div>
+  <div class="mode-select" role="group" aria-label="モード選択">
+    <button class="mode-btn mign-mode-btn on" data-mode="grid">マス記憶</button>
+    <button class="mode-btn mign-mode-btn" data-mode="poker">ポーカー</button>
+    <button class="mode-btn mign-mode-btn" data-mode="color">カラー記憶</button>
+  </div>
+  <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:12px;padding:10px 16px;">
+    <div class="game-msg" id="mign-msg" role="status" aria-live="polite"></div>
+    <!-- グリッドラッパー（マス記憶・ポーカー兼用） -->
+    <div id="mign-grid-wrap" class="mign-grid-wrap" role="region" aria-label="グリッドエリア"></div>
+    <!-- 汎用ステージ（ポーカー・カラー用） -->
+    <div id="mign-stage" role="region" aria-label="ゲームエリア"></div>
+    <!-- チップバンク（マス記憶用） -->
+    <div id="mign-bank" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;" role="group" aria-label="えらぶチップ"></div>
+    <!-- リザルト -->
+    <div class="result-overlay" id="mign-result" style="display:none;position:relative;border-radius:24px;padding:32px;" role="dialog" aria-label="結果">
+      <div class="result-emoji" aria-hidden="true">🎉</div>
+      <div class="result-msg">パーフェクト！</div>
+      <div class="result-sub">ぜんぶ おぼえてたね！</div>
+      <button class="btn-retry" onclick="Miginoukun.startMode()">もう一回</button>
+    </div>
+  </div>
+</div><!-- /page-miginoukun -->
+
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/flashcard.js"></script>
+<script src="js/dots.js"></script>
+<script src="js/recitation.js"></script>
+<script src="js/memorychip.js"></script>
+<script src="js/miginoukun.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  App.init();
+  Flashcard.init();
+  Dots.init();
+  Recitation.init();
+  MemoryChip.init();
+  Miginoukun.init();
+});
+</script>
+</body>
+</html>

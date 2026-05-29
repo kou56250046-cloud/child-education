@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理画面 — みぎのう あそび</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- パスワード画面 -->
+<div class="pw-screen" id="pw-screen">
+  <div class="pw-card" role="main">
+    <div class="pw-emoji" aria-hidden="true">⚙️</div>
+    <h1>管理画面</h1>
+    <p>パスワードを入力してください</p>
+    <form id="pw-form" novalidate>
+      <input type="password" id="pw-input" class="pw-input"
+        placeholder="パスワード" autocomplete="current-password"
+        aria-label="パスワード" required>
+      <p class="pw-error" id="pw-error" role="alert" aria-live="polite"></p>
+      <button type="submit" class="pw-btn">ログイン</button>
+    </form>
+    <p style="margin-top:16px;font-size:12px;color:var(--soft-ink);">
+      初期パスワード: <code>admin1234</code>（設定タブで変更可）
+    </p>
+  </div>
+</div>
+
+<!-- 管理画面本体 -->
+<div class="admin-layout" id="admin-layout" role="main" aria-label="管理画面">
+  <header class="admin-header">
+    <h1>⚙️ みぎのう あそび — 管理画面</h1>
+    <div class="admin-header-right">
+      <a href="index.html" class="btn-back-site">← サイトへ戻る</a>
+      <button class="btn-logout" onclick="location.reload()">ログアウト</button>
+    </div>
+  </header>
+
+  <!-- タブ -->
+  <div class="admin-tabs" role="tablist" aria-label="管理タブ">
+    <button class="tab-btn active" data-tab="cards"    role="tab" aria-selected="true">① カード管理</button>
+    <button class="tab-btn"        data-tab="texts"    role="tab" aria-selected="false">② テキスト管理</button>
+    <button class="tab-btn"        data-tab="settings" role="tab" aria-selected="false">③ 設定管理</button>
+    <button class="tab-btn"        data-tab="backup"   role="tab" aria-selected="false">④ バックアップ</button>
+  </div>
+
+  <!-- ① カード管理 -->
+  <div class="tab-panel active" id="tab-cards" role="tabpanel" aria-label="カード管理">
+    <div class="section-card">
+      <h2>📦 コンテンツ選択</h2>
+      <div class="form-row">
+        <label for="card-content-sel">コンテンツ</label>
+        <select id="card-content-sel" class="inp" style="max-width:260px;">
+          <option value="flashcards">フラッシュカード</option>
+          <option value="memorychip">メモリーチップ</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>🗂 カテゴリ</h2>
+      <div id="cat-list-wrap" class="cat-list" role="group" aria-label="カテゴリ一覧"></div>
+      <form id="add-cat-form" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;" novalidate>
+        <input type="text" id="new-cat-name" class="inp" placeholder="新しいカテゴリ名" style="max-width:200px;" aria-label="新しいカテゴリ名">
+        <button type="submit" class="btn btn-primary">＋ カテゴリを追加</button>
+      </form>
+    </div>
+
+    <div class="section-card">
+      <h2>🃏 カード一覧</h2>
+      <div id="card-list-wrap" class="card-list" role="list" aria-label="カード一覧"></div>
+      <form id="add-card-form" style="margin-top:12px;" novalidate>
+        <h3 style="margin:0 0 10px;font-size:14px;color:var(--soft-ink);">カードを追加</h3>
+        <div class="form-row">
+          <label for="new-card-name">名前</label>
+          <input type="text" id="new-card-name" class="inp" placeholder="例：ねこ" style="max-width:160px;" aria-label="カード名">
+        </div>
+        <div class="form-row">
+          <label for="new-card-emoji">絵文字</label>
+          <input type="text" id="new-card-emoji" class="inp inp-emoji" placeholder="例：🐱" aria-label="絵文字">
+        </div>
+        <button type="submit" class="btn btn-primary">＋ カードを追加</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ② テキスト管理 -->
+  <div class="tab-panel" id="tab-texts" role="tabpanel" aria-label="テキスト管理">
+    <div class="section-card">
+      <h2>🏠 ヒーローセクション</h2>
+      <div class="form-row"><label for="edit-hero-title">タイトル</label><input id="edit-hero-title" class="inp" type="text"></div>
+      <div class="form-row"><label for="edit-hero-subtitle">サブタイトル</label><input id="edit-hero-subtitle" class="inp" type="text"></div>
+      <div class="form-row"><label for="edit-hero-brainDesc">右脳・左脳説明</label><textarea id="edit-hero-brainDesc" class="inp"></textarea></div>
+      <div class="form-row"><label for="edit-hero-criticalDesc">臨界期説明</label><textarea id="edit-hero-criticalDesc" class="inp"></textarea></div>
+      <div class="form-row"><label for="edit-hero-flashDesc">高速入力説明</label><textarea id="edit-hero-flashDesc" class="inp"></textarea></div>
+      <div class="form-row"><label for="edit-hero-disclaimer">免責文</label><textarea id="edit-hero-disclaimer" class="inp"></textarea></div>
+    </div>
+
+    <!-- 各コンテンツセクション -->
+    <div id="text-sections-wrap">
+      <div class="section-card" id="text-sec-flashcard">
+        <h2>🐰 フラッシュカード</h2>
+        <div class="form-row"><label for="edit-flashcard-title">タイトル</label><input id="edit-flashcard-title" class="inp" type="text"></div>
+        <div class="form-row"><label for="edit-flashcard-meaning">意義</label><textarea id="edit-flashcard-meaning" class="inp"></textarea></div>
+        <div class="form-row"><label for="edit-flashcard-howto">効果的なやり方</label><textarea id="edit-flashcard-howto" class="inp"></textarea></div>
+      </div>
+      <div class="section-card">
+        <h2>🔴 ドッツ</h2>
+        <div class="form-row"><label for="edit-dots-title">タイトル</label><input id="edit-dots-title" class="inp" type="text"></div>
+        <div class="form-row"><label for="edit-dots-meaning">意義</label><textarea id="edit-dots-meaning" class="inp"></textarea></div>
+        <div class="form-row"><label for="edit-dots-howto">効果的なやり方</label><textarea id="edit-dots-howto" class="inp"></textarea></div>
+      </div>
+      <div class="section-card">
+        <h2>🌈 イメージ・あんしょう</h2>
+        <div class="form-row"><label for="edit-recitation-title">タイトル</label><input id="edit-recitation-title" class="inp" type="text"></div>
+        <div class="form-row"><label for="edit-recitation-meaning">意義</label><textarea id="edit-recitation-meaning" class="inp"></textarea></div>
+        <div class="form-row"><label for="edit-recitation-howto">効果的なやり方</label><textarea id="edit-recitation-howto" class="inp"></textarea></div>
+      </div>
+      <div class="section-card">
+        <h2>🧩 メモリーチップ</h2>
+        <div class="form-row"><label for="edit-memorychip-title">タイトル</label><input id="edit-memorychip-title" class="inp" type="text"></div>
+        <div class="form-row"><label for="edit-memorychip-meaning">意義</label><textarea id="edit-memorychip-meaning" class="inp"></textarea></div>
+        <div class="form-row"><label for="edit-memorychip-howto">効果的なやり方</label><textarea id="edit-memorychip-howto" class="inp"></textarea></div>
+      </div>
+      <div class="section-card">
+        <h2>🧠 みぎのう君</h2>
+        <div class="form-row"><label for="edit-miginoukun-title">タイトル</label><input id="edit-miginoukun-title" class="inp" type="text"></div>
+        <div class="form-row"><label for="edit-miginoukun-meaning">意義</label><textarea id="edit-miginoukun-meaning" class="inp"></textarea></div>
+        <div class="form-row"><label for="edit-miginoukun-howto">効果的なやり方</label><textarea id="edit-miginoukun-howto" class="inp"></textarea></div>
+      </div>
+    </div>
+
+    <button id="save-text-btn" class="btn btn-primary" style="margin-bottom:24px;">💾 テキストを保存</button>
+
+    <!-- 暗唱テキスト管理 -->
+    <div class="section-card">
+      <h2>📝 暗唱テキスト管理</h2>
+      <div id="recite-text-list"></div>
+      <form id="add-recite-form" style="margin-top:16px;" novalidate>
+        <h3 style="margin:0 0 10px;font-size:14px;color:var(--soft-ink);">題材を追加</h3>
+        <div class="form-row"><label for="new-recite-title">タイトル</label><input id="new-recite-title" class="inp" type="text" placeholder="例：あいうえお"></div>
+        <div class="form-row"><label for="new-recite-text">テキスト</label><textarea id="new-recite-text" class="inp" placeholder="暗唱するテキスト"></textarea></div>
+        <button type="submit" class="btn btn-primary">＋ 追加</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ③ 設定管理 -->
+  <div class="tab-panel" id="tab-settings" role="tabpanel" aria-label="設定管理">
+    <div class="section-card">
+      <h2>⏱ 年齢別設定</h2>
+      <div style="display:grid;grid-template-columns:60px 1fr 1fr;gap:8px;font-size:13px;color:var(--soft-ink);margin-bottom:4px;padding:0 4px;">
+        <span>年齢</span><span>提示速度(ms)</span><span>ドッツ最大数</span>
+      </div>
+      <div id="age-settings-wrap"></div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+        <button id="save-age-btn" class="btn btn-primary">💾 保存</button>
+        <button id="reset-age-btn" class="btn btn-danger">↩ デフォルトに戻す</button>
+      </div>
+    </div>
+
+    <!-- パスワード変更 -->
+    <div class="section-card">
+      <h2>🔑 パスワード変更</h2>
+      <form id="pw-change-form" class="pw-change-form" novalidate>
+        <div class="form-row"><label for="pw-current">現在のPW</label><input id="pw-current" class="inp" type="password" autocomplete="current-password"></div>
+        <div class="form-row"><label for="pw-new">新しいPW</label><input id="pw-new" class="inp" type="password" autocomplete="new-password"></div>
+        <div class="form-row"><label for="pw-confirm">確認</label><input id="pw-confirm" class="inp" type="password" autocomplete="new-password"></div>
+        <button type="submit" class="btn btn-primary">変更する</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ④ バックアップ -->
+  <div class="tab-panel" id="tab-backup" role="tabpanel" aria-label="データバックアップ">
+    <div class="section-card backup-card">
+      <h2>💾 データバックアップ</h2>
+      <p>管理画面での変更は <strong>このブラウザのlocalStorage</strong> に保存されています。<br>
+         データをエクスポートしてJSONファイルとして保存しておくと、別のデバイスへの移行や復元に使えます。</p>
+      <div class="backup-btns">
+        <button id="btn-export" class="btn btn-success">⬇ エクスポート（JSON）</button>
+        <div class="file-input-wrap">
+          <button id="btn-import-trigger" class="btn btn-secondary">⬆ インポート（JSON）</button>
+          <input type="file" id="import-file" accept=".json" aria-label="JSONファイルを選択">
+        </div>
+      </div>
+      <p id="import-notice" class="import-notice" role="alert" aria-live="polite"></p>
+      <hr style="margin:24px 0;border:none;border-top:1px dashed var(--line);">
+      <h3 style="color:var(--dot);font-size:15px;">⚠ 全データリセット</h3>
+      <p>すべての変更をデフォルトに戻します。この操作は元に戻せません。</p>
+      <button id="btn-reset-all" class="btn btn-danger">🗑 全データをリセット</button>
+    </div>
+  </div>
+
+  <!-- トースト通知 -->
+  <div id="admin-toast" role="status" aria-live="polite"
+    style="position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;
+      padding:10px 22px;border-radius:50px;font-size:14px;
+      opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;">
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

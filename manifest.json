@@ -1,0 +1,22 @@
+{
+  "name": "みぎのう あそび",
+  "short_name": "みぎのう",
+  "description": "0〜5さいの きおく・ちょっかんトレーニング",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fcf8f0",
+  "theme_color": "#f6c8b0",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23fcf8f0'/><text y='130' x='96' text-anchor='middle' font-size='120'>🧠</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23fcf8f0'/><text y='370' x='256' text-anchor='middle' font-size='320'>🧠</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

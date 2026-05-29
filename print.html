@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>印刷ページ — みぎのう あそび</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/print.css">
+</head>
+<body style="background:var(--cream);padding:0;margin:0;">
+
+<div class="print-page">
+  <!-- ヘッダー（印刷時非表示） -->
+  <div class="print-header no-print">
+    <a href="javascript:history.back()" class="print-back">← もどる</a>
+    <h1 id="print-page-title">🖨 印刷ページ</h1>
+  </div>
+
+  <!-- 設定パネル（印刷時非表示） -->
+  <div class="print-settings no-print">
+    <h2>印刷の設定</h2>
+    <div class="setting-row">
+      <label for="sel-type">コンテンツ</label>
+      <select id="sel-type">
+        <option value="flashcard">フラッシュカード</option>
+        <option value="dots">ドッツカード</option>
+        <option value="recitation">暗唱シート</option>
+        <option value="memorychip">メモリーチップ</option>
+        <option value="miginoukun">みぎのう君</option>
+      </select>
+    </div>
+
+    <!-- フラッシュカード設定 -->
+    <div id="settings-flashcard" class="type-settings">
+      <div class="setting-row">
+        <label for="sel-fc-cat">カテゴリ</label>
+        <select id="sel-fc-cat"></select>
+      </div>
+      <div class="setting-row">
+        <label for="sel-fc-count">枚数</label>
+        <select id="sel-fc-count">
+          <option value="10">10枚</option>
+          <option value="20">20枚</option>
+          <option value="all" selected>全枚</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ドッツ設定 -->
+    <div id="settings-dots" class="type-settings" style="display:none;">
+      <div class="setting-row">
+        <label for="sel-dots-max">最大数</label>
+        <select id="sel-dots-max">
+          <option value="10">1〜10</option>
+          <option value="20" selected>1〜20</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 暗唱設定 -->
+    <div id="settings-recitation" class="type-settings" style="display:none;">
+      <div class="setting-row">
+        <label for="sel-rec-item">題材</label>
+        <select id="sel-rec-item">
+          <option value="all">全題材</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- メモリーチップ設定 -->
+    <div id="settings-memorychip" class="type-settings" style="display:none;">
+      <div class="setting-row">
+        <label for="sel-mc-cat">カテゴリ</label>
+        <select id="sel-mc-cat">
+          <option value="all">全カテゴリ</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- みぎのう君設定 -->
+    <div id="settings-miginoukun" class="type-settings" style="display:none;">
+      <div class="setting-row">
+        <label for="sel-mign-type">チップ種類</label>
+        <select id="sel-mign-type">
+          <option value="pictures">絵チップ</option>
+          <option value="colors">色チップ</option>
+          <option value="symbols">記号チップ</option>
+          <option value="all">全種類</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 共通設定 -->
+    <div class="setting-row">
+      <label for="sel-layout">1ページ配置</label>
+      <select id="sel-layout">
+        <option value="6" selected>2×3（6枚）</option>
+        <option value="4">2×2（4枚）</option>
+      </select>
+    </div>
+
+    <button class="btn-print-exec no-print" onclick="window.print()">🖨 印刷する（Ctrl+P）</button>
+  </div>
+
+  <!-- 印刷プレビュー -->
+  <div id="print-preview"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script>
+(function () {
+  /* ---- URLパラメータからタイプ取得 ---- */
+  const params = new URLSearchParams(location.search);
+  const initType = params.get('type') || 'flashcard';
+  const selType = document.getElementById('sel-type');
+  selType.value = initType;
+
+  /* ---- カテゴリセレクト構築 ---- */
+  function buildCatSelect(selId, categories) {
+    const sel = document.getElementById(selId);
+    if (!sel) return;
+    sel.replaceChildren();
+    const allOpt = document.createElement('option');
+    allOpt.value = 'all'; allOpt.textContent = '全カテゴリ';
+    sel.appendChild(allOpt);
+    categories.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat.id; opt.textContent = cat.name;
+      sel.appendChild(opt);
+    });
+  }
+
+  function buildReciteSelect() {
+    const sel = document.getElementById('sel-rec-item');
+    if (!sel) return;
+    sel.replaceChildren();
+    const allOpt = document.createElement('option');
+    allOpt.value = 'all'; allOpt.textContent = '全題材';
+    sel.appendChild(allOpt);
+    Storage.getData().recitation.texts.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.id; opt.textContent = t.title;
+      sel.appendChild(opt);
+    });
+  }
+
+  function init() {
+    const data = Storage.getData();
+    buildCatSelect('sel-fc-cat', data.flashcards.categories);
+    buildCatSelect('sel-mc-cat', data.memorychip.categories);
+    buildReciteSelect();
+    showTypeSettings(initType);
+    render();
+  }
+
+  /* ---- 設定パネル切替 ---- */
+  function showTypeSettings(type) {
+    document.querySelectorAll('.type-settings').forEach(el => el.style.display = 'none');
+    const target = document.getElementById('settings-' + type);
+    if (target) target.style.display = '';
+    document.getElementById('print-page-title').textContent = '🖨 印刷ページ — ' + {
+      flashcard: 'フラッシュカード', dots: 'ドッツカード',
+      recitation: '暗唱シート', memorychip: 'メモリーチップ', miginoukun: 'みぎのう君'
+    }[type];
+  }
+
+  selType.onchange = () => { showTypeSettings(selType.value); render(); };
+  ['sel-fc-cat','sel-fc-count','sel-dots-max','sel-rec-item',
+   'sel-mc-cat','sel-mign-type','sel-layout'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.onchange = render;
+  });
+
+  /* ---- メイン描画 ---- */
+  function render() {
+    const type   = selType.value;
+    const layout = document.getElementById('sel-layout').value;
+    const preview = document.getElementById('print-preview');
+    if (!preview) return;
+    preview.replaceChildren();
+
+    if (type === 'flashcard') renderFlashcards(preview, layout);
+    else if (type === 'dots')   renderDots(preview, layout);
+    else if (type === 'recitation') renderRecitation(preview);
+    else if (type === 'memorychip') renderMemorychip(preview, layout);
+    else if (type === 'miginoukun') renderMiginoukun(preview, layout);
+  }
+
+  /* ---- フラッシュカード印刷 ---- */
+  function renderFlashcards(preview, layout) {
+    const data = Storage.getData();
+    const catId = document.getElementById('sel-fc-cat').value;
+    const countVal = document.getElementById('sel-fc-count').value;
+    let cards = [];
+
+    const cats = catId === 'all' ? data.flashcards.categories
+                                 : data.flashcards.categories.filter(c => c.id === catId);
+    cats.forEach(cat => cards.push(...cat.cards.map(c => ({ ...c, catId: cat.id }))));
+    if (countVal !== 'all') cards = cards.slice(0, +countVal);
+
+    const grid = makeGrid(layout);
+    cards.forEach(card => {
+      const el = document.createElement('div');
+      el.className = 'print-card';
+      const corner1 = document.createElement('div'); corner1.className = 'card-corner tl';
+      const corner2 = document.createElement('div'); corner2.className = 'card-corner br';
+
+      if (card.catId === 'hiragana' && !card.wordEmoji) {
+        const big = document.createElement('div');
+        big.className = 'card-hiragana'; big.textContent = card.emoji;
+        el.appendChild(corner1); el.appendChild(corner2); el.appendChild(big);
+      } else {
+        const emojiEl = document.createElement('div');
+        emojiEl.className = 'card-emoji'; emojiEl.textContent = card.emoji;
+        const nameEl = document.createElement('div');
+        nameEl.className = 'card-name'; nameEl.textContent = card.name;
+        el.appendChild(corner1); el.appendChild(corner2);
+        el.appendChild(emojiEl); el.appendChild(nameEl);
+      }
+      grid.appendChild(el);
+    });
+    preview.appendChild(grid);
+  }
+
+  /* ---- ドッツカード印刷 ---- */
+  function renderDots(preview, layout) {
+    const maxN = +document.getElementById('sel-dots-max').value;
+    const grid = makeGrid(layout);
+
+    for (let n = 1; n <= maxN; n++) {
+      const card = document.createElement('div');
+      card.className = 'print-dots-card';
+
+      const area = document.createElement('div');
+      area.className = 'print-dots-area';
+      const positions = generatePositions(n);
+      positions.forEach(pos => {
+        const dot = document.createElement('div');
+        dot.className = 'print-dot';
+        const size = Math.max(8, Math.min(18, Math.floor(80 / Math.sqrt(n + 1))));
+        dot.style.cssText = `width:${size}px;height:${size}px;left:${pos.x}%;top:${pos.y}%;`;
+        area.appendChild(dot);
+      });
+
+      const numEl = document.createElement('div');
+      numEl.className = 'print-dots-num'; numEl.textContent = String(n);
+
+      card.appendChild(area); card.appendChild(numEl);
+      grid.appendChild(card);
+    }
+    preview.appendChild(grid);
+  }
+
+  /* ---- 暗唱シート印刷 ---- */
+  function renderRecitation(preview) {
+    const data = Storage.getData();
+    const selId = document.getElementById('sel-rec-item').value;
+    const texts = selId === 'all' ? data.recitation.texts
+                                  : data.recitation.texts.filter(t => t.id === selId);
+    texts.forEach(t => {
+      const sheet = document.createElement('div');
+      sheet.className = 'print-recite-sheet';
+      const title = document.createElement('div');
+      title.className = 'print-recite-title'; title.textContent = '【 ' + t.title + ' 】';
+      const text = document.createElement('div');
+      text.className = 'print-recite-text'; text.textContent = t.text;
+      sheet.appendChild(title); sheet.appendChild(text);
+      preview.appendChild(sheet);
+    });
+  }
+
+  /* ---- メモリーチップ印刷 ---- */
+  function renderMemorychip(preview, layout) {
+    const data = Storage.getData();
+    const catId = document.getElementById('sel-mc-cat').value;
+    const cats  = catId === 'all' ? data.memorychip.categories
+                                  : data.memorychip.categories.filter(c => c.id === catId);
+    const grid = makeGrid(layout);
+    cats.forEach(cat => {
+      cat.chips.forEach(chip => {
+        const el = makeChipCard(chip.emoji, chip.name);
+        grid.appendChild(el);
+      });
+    });
+    preview.appendChild(grid);
+  }
+
+  /* ---- みぎのう君印刷 ---- */
+  function renderMiginoukun(preview, layout) {
+    const data = Storage.getData().miginoukun;
+    const typeVal = document.getElementById('sel-mign-type').value;
+    const grid = makeGrid(layout);
+
+    if (typeVal === 'pictures' || typeVal === 'all') {
+      data.pictures.forEach(p => grid.appendChild(makeChipCard(p.emoji, p.name)));
+    }
+    if (typeVal === 'colors' || typeVal === 'all') {
+      data.colors.forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'print-color-chip';
+        el.style.background = c.color;
+        if (c.border) el.style.border = '3px solid #ccc';
+        el.textContent = c.name;
+        grid.appendChild(el);
+      });
+    }
+    if (typeVal === 'symbols' || typeVal === 'all') {
+      data.symbols.forEach(s => grid.appendChild(makeChipCard(s.emoji, s.name)));
+    }
+    preview.appendChild(grid);
+  }
+
+  /* ---- ユーティリティ ---- */
+  function makeGrid(layout) {
+    const g = document.createElement('div');
+    g.className = 'cards-preview layout-' + layout;
+    return g;
+  }
+
+  function makeChipCard(emoji, name) {
+    const el = document.createElement('div');
+    el.className = 'print-chip-card';
+    const emojiEl = document.createElement('div');
+    emojiEl.className = 'chip-emoji'; emojiEl.textContent = emoji;
+    const nameEl = document.createElement('div');
+    nameEl.className = 'chip-label'; nameEl.textContent = name;
+    el.appendChild(emojiEl); el.appendChild(nameEl);
+    return el;
+  }
+
+  function generatePositions(n) {
+    const positions = [];
+    const margin = 8;
+    for (let i = 0; i < n; i++) {
+      let x, y, ok; let tries = 0;
+      do {
+        x = margin + Math.random() * (84 - margin);
+        y = margin + Math.random() * (84 - margin);
+        ok = positions.every(p => Math.hypot(p.x - x, p.y - y) > 18);
+        tries++;
+      } while (!ok && tries < 40);
+      positions.push({ x, y });
+    }
+    return positions;
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

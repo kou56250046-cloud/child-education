@@ -1,0 +1,134 @@
+/* ============================================================
+   print.css — 印刷専用スタイル
+   ============================================================ */
+
+/* 画面表示時のプリントページスタイル */
+.print-page { max-width: 900px; margin: 0 auto; padding: 20px; font-family: 'Zen Maru Gothic','Kosugi Maru',sans-serif; }
+.print-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #ece2d2; }
+.print-header h1 { font-size: 22px; margin: 0; color: #5b4636; }
+.print-back { text-decoration: none; background: #f6c8b0; color: #fff; padding: 8px 18px; border-radius: 50px; font-size: 14px; font-weight: 700; }
+
+.print-settings {
+  background: #fff; border-radius: 20px; padding: 20px 24px;
+  box-shadow: 0 6px 18px rgba(120,100,80,.12); margin-bottom: 24px;
+}
+.print-settings h2 { font-size: 16px; margin: 0 0 16px; color: #5b4636; }
+.setting-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.setting-row label { font-size: 14px; color: #5b4636; min-width: 100px; }
+.setting-row select, .setting-row input {
+  border: 2px solid #ece2d2; border-radius: 12px; padding: 6px 12px;
+  font-family: inherit; font-size: 13px; color: #5b4636; background: #fcf8f0;
+}
+.btn-print-exec {
+  border: none; border-radius: 50px; padding: 12px 28px;
+  font-size: 15px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg,#f6c8b0,#ef9b7c);
+  box-shadow: 0 6px 16px rgba(240,150,100,.35);
+  cursor: pointer; margin-top: 8px; font-family: inherit;
+  transition: transform .15s;
+}
+.btn-print-exec:active { transform: scale(.95); }
+
+/* ---------- カードグリッド（画面プレビュー） ---------- */
+.cards-preview {
+  display: grid; gap: 12px; justify-content: center;
+  margin-bottom: 24px;
+}
+.cards-preview.layout-6 { grid-template-columns: repeat(3, 1fr); }
+.cards-preview.layout-4 { grid-template-columns: repeat(2, 1fr); }
+
+/* ============================================================
+   @media print — 実際の印刷時のみ
+   ============================================================ */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  body { background: #fff !important; margin: 0; padding: 0; }
+
+  /* 印刷時に非表示にする要素 */
+  .print-header,
+  .print-settings,
+  .no-print { display: none !important; }
+
+  /* カードグリッド */
+  .cards-preview {
+    display: grid !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    page-break-inside: avoid;
+  }
+  .cards-preview.layout-6 { grid-template-columns: repeat(3, 1fr) !important; }
+  .cards-preview.layout-4 { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* カード単体 */
+  .print-card {
+    position: relative;
+    page-break-inside: avoid;
+    border: 1px dashed #ccc !important; /* 裁ちトンボ代わりの点線 */
+    margin: 0 !important;
+  }
+  .print-card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px dashed #ccc;
+    pointer-events: none;
+  }
+}
+
+/* ---------- カード本体（画面・印刷共通） ---------- */
+.print-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 2px solid #ece2d2;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  aspect-ratio: 1;
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.print-card .card-emoji  { font-size: clamp(36px,8vw,72px); line-height: 1.1; text-align: center; }
+.print-card .card-hiragana { font-size: clamp(60px,14vw,120px); font-family:'Kosugi Maru',sans-serif; line-height: 1; color: #5b4636; }
+.print-card .card-name  { font-size: clamp(12px,2.5vw,18px); font-weight: 700; margin-top: 6px; color: #5b4636; font-family:'Kosugi Maru',sans-serif; }
+.print-card .card-corner { position: absolute; width: 20px; height: 20px; border: 2px solid #ece2d2; }
+.print-card .card-corner.tl { top: 6px; left: 6px; border-right: none; border-bottom: none; border-radius: 4px 0 0 0; }
+.print-card .card-corner.br { bottom: 6px; right: 6px; border-left: none; border-top: none; border-radius: 0 0 4px 0; }
+
+/* ドッツカード */
+.print-dots-card { background: #fff; border-radius: 16px; border: 2px solid #ece2d2; padding: 12px; aspect-ratio: 1; position: relative; overflow: hidden; }
+.print-dots-area { position: relative; width: 100%; padding-top: 70%; }
+.print-dot { position: absolute; border-radius: 50%; background: #e35b4a; }
+.print-dots-num { text-align: center; font-size: clamp(18px,4vw,32px); font-weight: 700; color: #e35b4a; font-family:'Kosugi Maru',sans-serif; margin-top: 6px; }
+
+/* 暗唱シート */
+.print-recite-sheet {
+  background: #fff; border: 2px solid #ece2d2; border-radius: 16px;
+  padding: 28px 24px; margin-bottom: 16px; page-break-inside: avoid;
+}
+.print-recite-title { font-size: 16px; font-weight: 700; color: #9a8b78; margin-bottom: 14px; }
+.print-recite-text {
+  font-size: clamp(18px,4vw,26px); line-height: 2.4;
+  font-family:'Kosugi Maru',sans-serif; color: #5b4636;
+  white-space: pre-wrap;
+}
+
+/* チップカード */
+.print-chip-card {
+  background: #fff; border-radius: 16px; border: 2px solid #ece2d2;
+  aspect-ratio: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+  padding: 8px;
+}
+.print-chip-card .chip-emoji { font-size: clamp(32px,8vw,64px); }
+.print-chip-card .chip-label { font-size: clamp(10px,2vw,14px); color: #5b4636; font-weight: 700; font-family:'Kosugi Maru',sans-serif; }
+
+/* カラーチップ */
+.print-color-chip {
+  aspect-ratio: 1; border-radius: 14px; border: 2px solid #ece2d2;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 6px;
+  font-size: clamp(9px,1.8vw,12px); color: #5b4636;
+  font-weight: 700; font-family:'Kosugi Maru',sans-serif;
+}
