@@ -91,8 +91,16 @@ const Flashcard = (() => {
       displayEmoji = card.wordEmoji;
     }
 
-    picEl.textContent = displayEmoji;
-    picEl.className = 'pic' + (isHiragana && !flipMode ? ' hiragana-pic' : '');
+    if (card.imageUrl) {
+      const img = document.createElement('img');
+      img.src = card.imageUrl;
+      img.alt = card.name;
+      picEl.replaceChildren(img);
+      picEl.className = 'pic has-image';
+    } else {
+      picEl.textContent = displayEmoji;
+      picEl.className = 'pic' + (isHiragana && !flipMode ? ' hiragana-pic' : '');
+    }
 
     if (textOn) {
       wordEl.textContent = flipMode && isHiragana ? card.word || card.name : card.name;

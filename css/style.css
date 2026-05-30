@@ -49,6 +49,9 @@ a { text-decoration: none; color: inherit; }
               var(--cream);
   animation: pageFade .35s ease;
   overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left:   env(safe-area-inset-left,   0px);
+  padding-right:  env(safe-area-inset-right,  0px);
 }
 .training-page.active { display: flex; }
 @keyframes pageFade { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
@@ -274,7 +277,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ---------- フラッシュカード ---------- */
 .flash-card {
-  width: min(620px,94vw); aspect-ratio: 4/3;
+  width: min(620px, 94vw, calc((100svh - 290px) * 4 / 3)); aspect-ratio: 4/3;
   background: var(--paper); border-radius: 26px;
   box-shadow: 0 18px 44px var(--shadow);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -295,6 +298,13 @@ a { text-decoration: none; color: inherit; }
   position: absolute; bottom: 16px;
   font-size: clamp(22px,6vw,40px); font-weight: 700;
   color: var(--ink); font-family: 'Kosugi Maru', sans-serif; letter-spacing: .08em;
+}
+.flash-card .pic.has-image {
+  width: 80%; max-height: 65%;
+  display: flex; align-items: center; justify-content: center; font-size: 0;
+}
+.flash-card .pic.has-image img {
+  width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 10px;
 }
 .flash-card.pop { animation: cardPop .28s ease; }
 @keyframes cardPop { 0%{transform:scale(.85) rotate(-1.5deg);opacity:.2;} 100%{transform:scale(1) rotate(0);opacity:1;} }
@@ -497,7 +507,8 @@ a { text-decoration: none; color: inherit; }
   .hero-graph { padding: 16px 18px; }
   .section-header { flex-direction: column; text-align: center; gap: 8px; }
   .section-actions { justify-content: center; }
-  .age-pills { gap: 4px; }
+  .age-pills { gap: 4px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; max-width: calc(100% - 160px); }
+  .age-pills::-webkit-scrollbar { display: none; }
   .pill { padding: 4px 8px; font-size: 11px; }
   .opts { gap: 10px; }
   .controls { padding: 10px 12px 16px; }
@@ -510,7 +521,43 @@ a { text-decoration: none; color: inherit; }
 /* スマホ横向き */
 @media (max-height: 500px) and (orientation: landscape) {
   .hero-section { min-height: auto; padding: 20px 16px; }
-  .controls { padding: 8px 12px 12px; gap: 8px; }
-  .stage { padding: 4px 12px 0; }
-  .flash-card { aspect-ratio: 16/9; }
+
+  /* トレーニングページ: CSS Grid で topbar+catrow 全幅、stage|controls 横並び */
+  .training-page {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: 1fr 155px;
+  }
+  .topbar  { grid-column: 1 / -1; grid-row: 1; padding: 4px 12px; }
+  .cat-row { grid-column: 1 / -1; grid-row: 2; padding: 1px 12px 2px; }
+  .stage   { grid-column: 1; grid-row: 3; padding: 4px 6px; align-items: stretch; }
+  .controls {
+    grid-column: 2; grid-row: 3;
+    padding: 6px 8px;
+    gap: 6px;
+    border-left: 1px solid var(--line);
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* カード・ドッツ: width 制約を解除して高さ基準でサイズ決定 */
+  .flash-card, .dotboard { width: unset; }
+  .recite-card { min-height: unset; height: 100%; }
+
+  /* UIサイズ縮小 */
+  .back { width: 36px; height: 36px; font-size: 17px; }
+  .topbar-title { font-size: 13px; }
+  .age-pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: unset; }
+  .age-pills::-webkit-scrollbar { display: none; }
+  .pill { padding: 3px 6px; font-size: 9px; }
+  .cat-btn { padding: 3px 8px; font-size: 10px; }
+  .ctl { width: 38px; height: 38px; font-size: 16px; }
+  .ctl.main { width: 50px; height: 50px; font-size: 20px; }
+  .play-row { gap: 8px; }
+  .opts { flex-direction: column; align-items: flex-start; gap: 5px; font-size: 11px; }
+  .opt { gap: 4px; }
+  .toggle { width: 34px; height: 18px; }
+  .toggle::after { width: 12px; height: 12px; }
+  .toggle.on::after { left: 19px; }
+  .seg button { padding: 3px 6px; font-size: 10px; }
 }

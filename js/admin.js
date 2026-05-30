@@ -94,6 +94,10 @@ const Admin = (() => {
     }
 
     if (activeCatId) buildCardList();
+
+    // 画像URL欄はフラッシュカードのみ表示
+    const imgRow = document.getElementById('new-card-image-row');
+    if (imgRow) imgRow.style.display = activeCatKey === 'flashcards' ? '' : 'none';
   }
 
   function addCategory() {
@@ -191,18 +195,22 @@ const Admin = (() => {
   function addCard() {
     const nameInp  = document.getElementById('new-card-name');
     const emojiInp = document.getElementById('new-card-emoji');
+    const imageInp = document.getElementById('new-card-image');
     const name  = nameInp.value.trim();
     const emoji = emojiInp.value.trim();
     if (!name || !emoji) return;
     const data = Storage.getData();
     if (activeCatKey === 'flashcards') {
+      const imageUrl = imageInp ? imageInp.value.trim() : '';
+      const card = imageUrl ? { name, emoji, imageUrl } : { name, emoji };
       const cat = data.flashcards.categories.find(c => c.id === activeCatId);
-      if (cat) { cat.cards.push({ name, emoji }); Storage.saveFlashcards(data.flashcards); }
+      if (cat) { cat.cards.push(card); Storage.saveFlashcards(data.flashcards); }
     } else if (activeCatKey === 'memorychip') {
       const cat = data.memorychip.categories.find(c => c.id === activeCatId);
       if (cat) { cat.chips.push({ name, emoji }); Storage.saveMemorychip(data.memorychip); }
     }
     nameInp.value = ''; emojiInp.value = '';
+    if (imageInp) imageInp.value = '';
     buildCardList();
   }
 
@@ -226,8 +234,13 @@ const Admin = (() => {
     if (newEmoji === null) return;
     const data = Storage.getData();
     if (activeCatKey === 'flashcards') {
+      const newImageUrl = prompt('画像URL（省略可・削除は空欄）', card.imageUrl || '');
+      if (newImageUrl === null) return;
+      const updated = { ...card, name: newName.trim(), emoji: newEmoji.trim() };
+      if (newImageUrl.trim()) updated.imageUrl = newImageUrl.trim();
+      else delete updated.imageUrl;
       const cat = data.flashcards.categories.find(c => c.id === activeCatId);
-      if (cat) { cat.cards[idx] = { ...card, name: newName.trim(), emoji: newEmoji.trim() }; Storage.saveFlashcards(data.flashcards); }
+      if (cat) { cat.cards[idx] = updated; Storage.saveFlashcards(data.flashcards); }
     } else if (activeCatKey === 'memorychip') {
       const cat = data.memorychip.categories.find(c => c.id === activeCatId);
       if (cat) { cat.chips[idx] = { ...card, name: newName.trim(), emoji: newEmoji.trim() }; Storage.saveMemorychip(data.memorychip); }
